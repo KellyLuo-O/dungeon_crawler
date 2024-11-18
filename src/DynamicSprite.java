@@ -18,6 +18,10 @@ public class DynamicSprite extends SolidSprite{
         this.direction = direction;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public void drawHealth(Graphics g)
     {
         g.setColor(Color.red);
@@ -89,7 +93,10 @@ public class DynamicSprite extends SolidSprite{
         for(Sprite sprite : environment)
             if ((sprite instanceof StaticEnnemie))
                 if (hitbox.intersects(sprite.getHitBox()))
+                {
                     health -= 3;
+                }
+
     }
 
     public void setSpeed(double speed) {

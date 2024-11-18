@@ -20,8 +20,8 @@ public class Main {
         Playground level = new Playground("./data/level2.txt");
         DynamicSprite hero = new DynamicSprite(ImageIO.read(new File("./img/heroTileSheetLowRes.png")), 200, 300, 48, 50);
 
-        renderEngine = new RenderEngine();
         gameEngine = new GameEngine(hero);
+        renderEngine = new RenderEngine(gameEngine);
         physicEngine = new PhysicEngine();
 
         Timer renderTimer = new Timer(50, (time)->renderEngine.update());

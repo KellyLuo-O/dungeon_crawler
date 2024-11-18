@@ -1,12 +1,31 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class RenderEngine extends JPanel implements Engine {
     private ArrayList<Displayable> renderList;
+    private final GameEngine gameEngine;
 
-    public RenderEngine(){
+    private Image imageTitleScreen;
+    private Image imageGameOver;
+
+    public RenderEngine(GameEngine gameEngine){
         renderList = new ArrayList<Displayable>();
+
+        this.gameEngine = gameEngine;
+
+        try{
+            imageTitleScreen = ImageIO.read(new File("./img/titleScreen.png"));
+            imageGameOver = ImageIO.read(new File("./img/gameOver.png"));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void setRenderList(ArrayList<Displayable> renderList) {
@@ -31,7 +50,20 @@ public class RenderEngine extends JPanel implements Engine {
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        for (Displayable displayable : renderList)
-            displayable.draw(g);
+        switch (gameEngine.getGameState()){
+            case titleScreen :
+                g.drawImage(imageTitleScreen, 0, 0, 400, 600, null);
+                break;
+            case gameOver :
+                g.drawImage(imageGameOver, 0, 0, 400, 600, null);
+                break;
+            case game:
+                for (Displayable displayable : renderList)
+                    displayable.draw(g);
+                g.setFont(new Font ("Courier New", Font.BOLD, 20));
+                g.drawString("TIMER : " + Integer.toString(gameEngine.getTime()), 20, 20);
+                break;
+        }
+
     }
 }
